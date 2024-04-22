@@ -12,20 +12,24 @@
         die("Connection failed: " . $conn->connect_error);
     }
 
+    $arr = array();
+
     if($_SERVER['REQUEST_METHOD'] == 'POST'){
         $requestBody = file_get_contents('php://input');
         $jsonData = json_decode($requestBody, true);
-    
+        
         if ($jsonData !== null) {
-            $username = $jsonData['username'];
+            $nombre = $jsonData['nombre'];
+            $cantidad = $jsonData['cantidad'];
+            $precio = $jsonData['precio'];
+            $descripcion = $jsonData['descripcion'];
+            $imagen = $jsonData['imagen'];
     
-            $sql = "SELECT autorizado FROM users WHERE nombre = '$username';";
+            $sql = "INSERT INTO productos VALUES('','$nombre',$cantidad,$precio,'$descripcion','$imagen');";
             $result = $conn->query($sql);
         
-            if($result->num_rows > 0){
-                while($row = $result->fetch_assoc()) {
-                    echo json_encode(array("auth" => $row["autorizado"]));
-                }
+            if($result == true){
+                echo json_encode(array('res'=>true));
             }else{
                 echo json_encode(array("res"=>false));
                 die("". $conn->error);
@@ -34,6 +38,14 @@
             echo json_encode(array('res' => false));
             die("". $conn->error);
         }
+    } else if($_SERVER['REQUEST_METHOD'] == 'GET'){ 
+        $sql = "SELECT nombre, cantidad, precio, descripcion, imagen FROM productos;";
+        $result = $conn->query($sql);
+        while($row = $result->fetch_assoc()){
+            array_push($arr, array("nombre"=>$row["nombre"],"cantidad"=>$row['cantidad'],"precio"=>$row['precio'],"descripcion"=>$row['descripcion'], "imagen"=>$row['imagen']));
+        }
+        echo json_encode($arr);
+        die();
     } else {
         echo json_encode(array('res'=> false));
         die("". $conn->error);

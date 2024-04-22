@@ -27,7 +27,7 @@
             } else{
                 $permission = 0;
             }
-            $username = $conn->real_escape_string($jsonData["username"]);
+            $username = $jsonData["username"];
     
             $sql = "UPDATE users SET autorizado = $permission WHERE nombre = '$username'";
             $result = $conn->query($sql);

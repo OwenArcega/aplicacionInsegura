@@ -19,7 +19,7 @@
         $jsonData = json_decode($requestBody, true);
     
         if ($jsonData !== null) {
-            $username = $conn->real_escape_string($jsonData['username']);
+            $username = $jsonData['username'];
     
             $sql = "SELECT id,  nombre, correo, contrasena FROM users WHERE nombre = '$username';";
             $result = $conn->query($sql);
@@ -41,10 +41,10 @@
         $jsonData = json_decode($requestBody, true);
     
         if ($jsonData !== null) {
-            $username = $conn->real_escape_string($jsonData['username']);
-            $email = $conn->real_escape_string($jsonData['email']);
-            $password = $conn->real_escape_string($jsonData['password']);
-            $id = $conn->real_escape_string($jsonData['id']);
+            $username = $jsonData['username'];
+            $email = $jsonData['email'];
+            $password = $jsonData['password'];
+            $id = $jsonData['id'];
 
             $sql = "UPDATE users SET nombre = '$username', correo = '$email', contrasena = '$password' WHERE id = $id;";
             $result = $conn->query($sql);

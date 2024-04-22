@@ -17,9 +17,9 @@
         $jsonData = json_decode($requestBody, true);
     
         if ($jsonData !== null) {
-            $name = $conn->real_escape_string($jsonData['name']);
-            $email = $conn->real_escape_string($jsonData['email']);
-            $hashedPassword = $conn->real_escape_string($jsonData['password']);
+            $name = $jsonData['name'];
+            $email = $jsonData['email'];
+            $hashedPassword = $jsonData['password'];
         
             $sql = "SELECT * FROM administradores WHERE nombre = '$name' AND correo = '$email' AND contrasena = '$hashedPassword';";
             $result = $conn->query($sql);

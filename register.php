@@ -17,9 +17,9 @@
         $jsonData = json_decode($requestBody, true);
 
         if ($jsonData !== null) {
-            $username = $conn->real_escape_string($jsonData['name']);
-            $email = $conn->real_escape_string($jsonData['email']);
-            $hashedPassword = $conn->real_escape_string($jsonData['password']);
+            $username = $jsonData['name'];
+            $email = $jsonData['email'];
+            $hashedPassword = $jsonData['password'];
         
             $sql = "SELECT * FROM users WHERE nombre = '$username';";
             $result = $conn->query($sql);

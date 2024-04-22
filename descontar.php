@@ -12,20 +12,21 @@
         die("Connection failed: " . $conn->connect_error);
     }
 
+    $arr = array();
+
     if($_SERVER['REQUEST_METHOD'] == 'POST'){
         $requestBody = file_get_contents('php://input');
         $jsonData = json_decode($requestBody, true);
-    
+        
         if ($jsonData !== null) {
-            $username = $jsonData['username'];
+            $nombre = $jsonData['nombre'];
+            $cantidad = $jsonData['cantidad'];
     
-            $sql = "SELECT autorizado FROM users WHERE nombre = '$username';";
+            $sql = "UPDATE productos SET cantidad = (cantidad - $cantidad) WHERE nombre = '$nombre';";
             $result = $conn->query($sql);
         
-            if($result->num_rows > 0){
-                while($row = $result->fetch_assoc()) {
-                    echo json_encode(array("auth" => $row["autorizado"]));
-                }
+            if($result == true){
+                echo json_encode(array('res'=>true));
             }else{
                 echo json_encode(array("res"=>false));
                 die("". $conn->error);
